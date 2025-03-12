@@ -1,0 +1,35 @@
+{
+  "name": "graphqlserver",
+  "version": "1.0.0",
+  "description": "GraphQL Server",
+  "license": "ISC",
+  "author": "uma voleti",
+  "type": "module",
+  "main": "index.js",
+  "build": "tsc",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "tsx ./src/main.ts",
+    "types:check": "tsc --noEmit",
+    "lint:check": "eslint .",
+    "format:check": "prettier ./src --check"
+  },
+  "keywords": [],
+  "dependencies": {
+    "@apollo/server": "^4.11.3",
+    "graphql": "^16.10.0",
+    "graphql-tag": "^2.12.6"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.22.0",
+    "@types/node": "^22.13.10",
+    "eslint": "^9.22.0",
+    "eslint-config-prettier": "^10.1.1",
+    "eslint-plugin-prettier": "^5.2.3",
+    "globals": "^16.0.0",
+    "prettier": "3.5.3",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.2",
+    "typescript-eslint": "^8.26.1"
+  }
+}
