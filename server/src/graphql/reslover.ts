@@ -2,6 +2,20 @@ import type { Context } from '../context'
 import type { Car, People } from './types'
 
 type RetrunType<T> = T | null | undefined
+
+const deleteCar = (id: string, context: Context): RetrunType<Car> => {
+    const index = context.cars.findIndex(car => car.id === id)
+    if (index !== -1) {
+        const deletedCar = context.cars.splice(index, 1)[0]
+        context.cars.map((car, i) => ({
+            ...car,
+            id: i.toString()
+        }))
+        return deletedCar
+    }
+
+    return null
+}
 export const resolvers = {
     People: {
         cars: (
@@ -18,8 +32,10 @@ export const resolvers = {
             _args: never,
             context: Context
         ): RetrunType<People[]> => context.people,
-        cars: (_: never, _args: never, context: Context): RetrunType<Car[]> =>
-            context.cars,
+        cars: (_: never, _args: never, context: Context): RetrunType<Car[]> => {
+            console.log(context.cars)
+            return context.cars
+        },
         personWithCars: (
             _: never,
             args: { id: string },
@@ -65,10 +81,14 @@ export const resolvers = {
             )
             if (index !== -1) {
                 const [deletedPerson] = context.people.splice(index, 1)
-                // Remove all their cars
-                context.cars = context.cars.filter(
-                    car => car.personId !== args.id
+                const cars = context.cars.filter(
+                    car => car.personId === args.id
                 )
+                cars.map(car => deleteCar(car.id, context))
+                context.people = context.people.map((people, i) => ({
+                    ...people,
+                    id: i.toString()
+                }))
                 return deletedPerson
             }
             return null
@@ -123,11 +143,7 @@ export const resolvers = {
             args: { id: string },
             context: Context
         ): RetrunType<Car> => {
-            const index = context.cars.findIndex(car => car.id === args.id)
-            if (index !== -1) {
-                return context.cars.splice(index, 1)[0]
-            }
-            return null
+            return deleteCar(args.id, context)
         }
     }
 }
